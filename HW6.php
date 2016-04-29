@@ -47,14 +47,14 @@
 	    </div>
 	</div>
 
-	<div class ="table"> </div>
+	<div class="table"> </div>
 
 	<script>
 
 		var canv = document.getElementById("mapCanvas");
         var c = canv.getContext("2d");
-		
-		function draw(){  
+        
+		function drawMap(){  
 
 			var lat = 38.7664409;
 			var lon = -97.8875587;
@@ -64,16 +64,72 @@
 			var w, h;
 			
 			img.onload = function(){  			  	  
-				w=canv.width;		
-				h=canv.height;					
-				c.drawImage(img, 0, 0, w, h ); 	
+				w = canv.width;		
+				h = canv.height;					
+				c.drawImage(img, 0, 0, w, h );
 			}
 
 			img.src = "http://maps.googleapis.com/maps/api/staticmap?center="+lat+','+lon+"&zoom="+zoom+"&size=930x440&sensor=false";
 		}
 
+		function getMousePos(canvas, events){
+
+  			var obj = canvas;
+  			var top = 0, left = 0;
+			var mX = 0, mY = 0;
+ 			
+ 			while (obj && obj.tagName != 'BODY') { //accumulate offsets up to 'BODY'
+      			top += obj.offsetTop;
+      			left += obj.offsetLeft;
+      			obj = obj.offsetParent;}
+  			
+			mX = events.clientX - left + window.pageXOffset;
+  			mY = events.clientY - top + window.pageYOffset;
+
+  			makeCircle(mX, mY)
+  			return { x: mX, y: mY };
+
+		}
+
+		function makeCircle(x, y){
+
+			var canv = document.getElementById("mapCanvas");
+       		var c = canv.getContext("2d");
+
+       		c.globalAlpha = 0.5;
+       		c.fillStyle="#CCCCFF";
+         	c.strokeStyle="#6666FF";
+         	c.lineWidth =2;
+         	c.beginPath();
+         	c.arc(x,y,20,0,Math.PI*2);
+         	c.closePath();
+         	c.fill();
+         	c.stroke();
+         	c.globalAlpha = 1;
+
+         	c.fillStyle="black";
+         	c.strokeStyle="black";
+         	c.lineWidth = 1;
+         	c.beginPath();
+         	c.arc(x,y,3,0,Math.PI*2);
+         	c.closePath();
+         	c.fill();
+         	c.stroke();
+
+		}
+
 		function onStart(){
-			draw()
+			drawMap()
+			
+			var canvas = document.getElementById('mapCanvas');
+    	   	canvas.addEventListener('mousedown', function(events){
+    	   		var mousePos = getMousePos(canvas, events);
+    	   		var tx = document.getElementById("xpos");
+		  		tx.value = mousePos.x;
+    			var ty = document.getElementById("ypos");
+		  		ty.value = mousePos.y;
+		  	})
+		
 		}
 
 	</script>
