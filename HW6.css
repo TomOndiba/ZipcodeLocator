@@ -16,7 +16,7 @@ p {margin:0 auto; text-align: center; padding-top: 3px; color: #800000 ; font-si
 	margin-top: -20px;}
 
 .button {
-	border:1px solid white; 
+	border:1px #336699; 
 	color:#F2F468; 
 	font:14px solid; 
 	background: #34888C; 
@@ -25,13 +25,13 @@ p {margin:0 auto; text-align: center; padding-top: 3px; color: #800000 ; font-si
 .canvasDiv{
 	margin-left: 125px; 
 	margin-top:10px; 
-	width:80%; height:366px; 
+	width:80%; height:450px; 
 	display: block; 
 	background:#F5F5DC; 
 	border:1px solid #800000; 
 	border-radius: 9px;}
 
-#mapCanvas{padding-top: 1px; padding-bottom: 1px;}
+#mapCanvas{padding-top: 1px; padding-bottom: 1px; margin-top: 5px;}
 
 .bottomBanner{
 	margin-top: 10px; 
