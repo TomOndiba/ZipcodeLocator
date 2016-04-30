@@ -50,11 +50,11 @@
 	<div class="table"> </div>
 
 	<script>
-
-		var canv = document.getElementById("mapCanvas");
-        var c = canv.getContext("2d");
         
-		function drawMap(){  
+		function drawMap(){ 
+
+			var canv = document.getElementById("mapCanvas");
+        	var c = canv.getContext("2d"); 
 
 			var lat = 38.7664409;
 			var lon = -97.8875587;
