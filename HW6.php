@@ -31,9 +31,9 @@
 	        <form action="HW6.php" method="get" >
 	        	
 	        	<p> LATITUDE: </p>
-	            <input type="text" input size="5" id="xpos" name="xpos" readonly>
+	            <input type="text" input size="7" id="xpos" name="xpos" readonly>
 	            <p> LONGITUDE: </p>
-	            <input type="text"  input size="5" id="ypos" name="ypos" readonly>              
+	            <input type="text"  input size="7" id="ypos" name="ypos" readonly>              
 	           
 	            <input class="button" type="submit" name="button" value=" List Nearby Zipcodes "  /> 
 	        	<p> Items per Page </p>   
@@ -75,7 +75,8 @@
 				}
 			}
 
-			img.src = "http://maps.googleapis.com/maps/api/staticmap?center="+lat+','+lon+"&zoom="+zoom+"&size=930x440&sensor=false";
+			img.src = "http://maps.googleapis.com/maps/api/staticmap?center="+lat+','+lon+"&zoom="+zoom+"&size=930x339&sensor=false";
+			console.log(img.src)
 		}
 
 		function getMousePos(canvas, events){
@@ -131,16 +132,14 @@
     	   	canvas.addEventListener('mousedown', function(events){
     	   		var mousePos = getMousePos(canvas, events);
     	   		var tx = document.getElementById("xpos");
-		  		tx.value = mousePos.x;
-    			var ty = document.getElementById("ypos");
-		  		ty.value = mousePos.y;
+    	   		var ty = document.getElementById("ypos");
+		  		tx.value = (-125.6301 + 0.0594*mousePos.x).toFixed(3);
+		  		ty.value = (49.2522 - 0.0494*mousePos.y).toFixed(3);
 
-		  		if (typeof(Storage) !== "undefined"){
-		  			sessionStorage.lastMouseX = mousePos.x;
-		  			sessionStorage.lastMouseY = mousePos.y; 
-		  			sessionStorage.latitude = tx.value;
-		  			sessionStorage.longitude = ty.value;
-		  		}
+	  			sessionStorage.lastMouseX = mousePos.x;
+	  			sessionStorage.lastMouseY = mousePos.y; 
+	  			sessionStorage.latitude = tx.value;
+	  			sessionStorage.longitude = ty.value;
 		  		drawMap()
 		  	})
 		
