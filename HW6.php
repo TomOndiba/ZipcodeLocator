@@ -67,6 +67,12 @@
 				w = canv.width;		
 				h = canv.height;					
 				c.drawImage(img, 0, 0, w, h );
+
+				if (sessionStorage.getItem("latitude")){
+					makeCircle(sessionStorage.lastMouseX, sessionStorage.lastMouseY);
+					document.getElementById("xpos").value = sessionStorage.latitude;
+					document.getElementById("ypos").value = sessionStorage.longitude;
+				}
 			}
 
 			img.src = "http://maps.googleapis.com/maps/api/staticmap?center="+lat+','+lon+"&zoom="+zoom+"&size=930x440&sensor=false";
@@ -128,6 +134,14 @@
 		  		tx.value = mousePos.x;
     			var ty = document.getElementById("ypos");
 		  		ty.value = mousePos.y;
+
+		  		if (typeof(Storage) !== "undefined"){
+		  			sessionStorage.lastMouseX = mousePos.x;
+		  			sessionStorage.lastMouseY = mousePos.y; 
+		  			sessionStorage.latitude = tx.value;
+		  			sessionStorage.longitude = ty.value;
+		  		}
+		  		drawMap()
 		  	})
 		
 		}
