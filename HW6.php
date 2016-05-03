@@ -126,8 +126,9 @@
     	   		var mousePos = getMousePos(canvas, events);
     	   		var tx = document.getElementById("xpos");
     	   		var ty = document.getElementById("ypos");
-		  		tx.value = (-125.6301 + 0.0594*mousePos.x).toFixed(3);
-		  		ty.value = (49.2522 - 0.0494*mousePos.y).toFixed(3);
+    	   		tx.value = (49.2522 - 0.0494*mousePos.y).toFixed(3);
+		  		ty.value = (-125.6301 + 0.0594*mousePos.x).toFixed(3);
+		  		
 
 	  			sessionStorage.lastMouseX = mousePos.x;
 	  			sessionStorage.lastMouseY = mousePos.y; 
