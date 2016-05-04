@@ -2,6 +2,7 @@ body {text-align: center; background-color:#336699;}
 
 p {margin:0 auto; text-align: center; padding-top: 3px; color: #800000 ; font-size:18px;}
 
+
 .topBanner{
 	margin-left: 125px; 
 	width:80%; height:32px; 
@@ -9,6 +10,8 @@ p {margin:0 auto; text-align: center; padding-top: 3px; color: #800000 ; font-si
 	background:#F2F468; 
 	border:1px solid #800000; 
 	border-radius: 9px;}
+
+.topbanner p { text-align: right; }
 
 .form1{
 	margin-left: 450px; 
@@ -49,7 +52,35 @@ p {margin:0 auto; text-align: center; padding-top: 3px; color: #800000 ; font-si
 	margin-left: 125px;
 	width: 80%; height: 25px; 
 	background:#F2F468; 
-	padding-top:3px; 
+	padding-top:20px;
+	padding-bottom: 20px; 
 	border:1px solid  #800000; 
 	border-radius: 9px; 
 	display: table;}
+
+#table, th, td
+{
+    margin:0 auto; 
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 700px;
+    text-align: center;
+    
+}
+
+.zip
+{
+    color: yellow;
+}
+
+.twoCol
+{
+    color: blue;
+}
+
+.threeCol
+{
+    color: #800000;
+}
+
+

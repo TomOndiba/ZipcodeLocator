@@ -16,7 +16,6 @@
 		</form>
 		
 		<?php
-
 			$db_conn = mysql_connect("localhost", "root", "");
 			
 			if( isset($_GET["button"]) ){
@@ -32,18 +31,19 @@
 	                    mysql_select_db("ZipcodeDatabase", $db_conn);
 	                    $cmd = "CREATE TABLE clist ( 
 	                    	Zipcode int(5) NOT NULL PRIMARY KEY,
-							Name varchar(25),
+							City varchar(25),
 							State varchar(2),
-							Longitude float(7,4),
 							Latitude float(7,4),
+							Longitude float(7,4),
 							gap int(1));";
 	                    mysql_query($cmd);
 	                    $cmd = "LOAD DATA LOCAL INFILE 'zip_codes_usa.csv' INTO TABLE clist FIELDS TERMINATED BY ',';";                    
                         mysql_query($cmd);                  
-                        echo "DataBase Created";
-	                
-	                } else {
-	                	echo "DataBase Already Created";
+                        echo " <p id='DBCreated'> Succesfully created database! </p> ";
+	                } 
+
+	                else {
+	                	echo " <p id='DBExists'> Database already exists </p> ";
 	                }
 	            }
 
@@ -54,15 +54,13 @@
 
 					$retval = mysql_query("DROP DATABASE ZipcodeDatabase;", $db_conn);
 					if(!$retval)
-						echo "No such database to delete";
+						echo " <p id='DBDelete1'> No such database to delete </p> ";
 					else
-						echo "Database deleted successfully\n";
+						echo " <p id='DBDelete2'> Database deleted successfully </p> ";
 	            }
 	        }
-
-
-
 		?>
+
 	</div>
 
 	<div class = "canvasDiv">
@@ -80,7 +78,7 @@
            
             <input class="button" type="submit" name="button" value= " List Nearby Zipcodes " /> 
         	<p> Items per Page </p>   
-            <select type="submit" name="drop" id="selectImg">
+            <select type="submit" name="dropdown" id="selectNumRows">
             	<option>5</option>
             	<option>10</option>
             	<option>15</option>
@@ -89,7 +87,89 @@
         </form>                      
 	</div>
 
-	<div class="table"></div>
+	<div class="table">
+	<?php
+
+		function latLonToMiles($lat1, $lon1, $lat2, $lon2)
+        {  
+            $R = 3961;  
+            $dlon = ($lon2 - $lon1)*M_PI/180;
+            $dlat = ($lat2 - $lat1)*M_PI/180;
+            $lat1 *= M_PI/180;
+            $lat2 *= M_PI/180;
+            $a = pow(sin($dlat/2),2) + cos($lat1) * cos($lat2) * pow(sin($dlon/2),2) ;
+            $c = 2 * atan2( sqrt($a), sqrt(1-$a) ) ;
+            $d = $R * $c;
+            return number_format((float)$d, 2, '.', '');	
+        }
+
+
+		$db_conn = mysqli_connect("localhost", "root", "");
+			
+			if( isset($_GET["button"]) ){
+                                    
+	            if( $_GET["button"] == " List Nearby Zipcodes "){
+	            	
+	            	if(mysqli_select_db($db_conn, 'ZipcodeDatabase')) {
+	                	
+	                	//connection error to mySQL 
+	                	if (!$db_conn)
+	                    	die("Unable to connect: " . mysql_error()); 
+	                	
+
+						//getting data from each field 
+						$userLatitude = $_GET['xpos'];
+						$userLongitude = $_GET['ypos'];
+						$numItems = $_GET['dropdown'];
+
+						//keeps the chosen number of rows after page reload 
+						echo "<script> selectNumRows.value = " . $numItems. "</script>";
+
+						//commmand needed to get nearest zipcodes
+						$cmd = "SELECT *, SQRT(POW((Latitude - $userLatitude),2)+POW((Longitude - $userLongitude),2)) AS distance
+						FROM clist ORDER BY distance ASC limit $numItems ";
+						
+
+						//make initial table 
+						echo("<table id='table'>	
+							<tr>
+							<td> Zip Code </td>
+        					<td> City </td>
+                         	<td> State </td>
+                         	<td> Lat </td>
+                         	<td> Lon </td>
+                         	<td>Distance (miles) </td>
+                         	<td>Time Diff (from ET) </td></tr>" ); 
+
+						// populating database with info from databse
+						$records = mysqli_query($db_conn, $cmd);
+						if($records){
+							while($row = mysqli_fetch_array($records)){
+							echo( "<tr>"
+								. "<td>" . $row['Zipcode'] . "</td>" 
+							 	. "<td>" . $row['City']    . "</td>" 
+							 	. "<td>" . $row['State']   . "</td>"
+							 	. "<td>" . $row['Latitude'] . "</td>"  
+							 	. "<td>" . $row['Longitude']	. "</td>"
+							 	. "<td >" . (latLonToMiles($row['Latitude'], $row['Longitude'], $userLatitude, $userLongitude)) . "</td>" 	 		
+							 	. "<td>" . ($row['gap']+5) . "</td>"  
+							 	. "</td></tr>");					
+
+							
+							}
+							echo " </table>"."<br>";
+
+						}
+						
+						        
+					} else {
+	                	echo " <p id='noDatError'> No database to pull information from. Create a database first! </p>";
+	                }
+	            }
+
+	        }
+
+	?> </div>
 
 	<script>
         
