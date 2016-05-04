@@ -11,9 +11,58 @@
 	 <div class="topBanner">   
         <p> THE COM 214 ZIP CODE LOCATOR </p>     
 		<form class ="form1" action="HW6.php" method="get">
-			<input class="button" type="submit" name="button" value=" Create DB " />
-			<input class="button" type="submit" name="button" value=" Drop DB " />
+			<input class="button" type="submit" name="button" value= " Create DB " />
+			<input class="button" type="submit" name="button" value= " Drop DB " />
 		</form>
+		
+		<?php
+
+			$db_conn = mysql_connect("localhost", "root", "");
+			
+			if( isset($_GET["button"]) ){
+                                    
+	            if( $_GET["button"] == " Create DB "){
+	            	
+	            	if(!mysql_select_db('ZipcodeDatabase')) {
+	                	
+	                	if (!$db_conn)
+	                    	die("Unable to connect: " . mysql_error()); 
+	                	
+	                	mysql_query("CREATE DATABASE ZipcodeDatabase;", $db_conn);
+	                    mysql_select_db("ZipcodeDatabase", $db_conn);
+	                    $cmd = "CREATE TABLE clist ( 
+	                    	Zipcode int(5) NOT NULL PRIMARY KEY,
+							Name varchar(25),
+							State varchar(2),
+							Longitude float(7,4),
+							Latitude float(7,4),
+							gap int(1));";
+	                    mysql_query($cmd);
+	                    $cmd = "LOAD DATA LOCAL INFILE 'zip_codes_usa.csv' INTO TABLE clist FIELDS TERMINATED BY ',';";                    
+                        mysql_query($cmd);                  
+                        echo "DataBase Created";
+	                
+	                } else {
+	                	echo "DataBase Already Created";
+	                }
+	            }
+
+	            if( $_GET["button"] == " Drop DB "){
+	            	
+	            	if (!$db_conn)
+						die("Unable to connect: " . mysqli_connect_error());  
+
+					$retval = mysql_query("DROP DATABASE ZipcodeDatabase;", $db_conn);
+					if(!$retval)
+						echo "No such database to delete";
+					else
+						echo "Database deleted successfully\n";
+	            }
+	        }
+
+
+
+		?>
 	</div>
 
 	<div class = "canvasDiv">
@@ -29,13 +78,13 @@
             <p> LONGITUDE: </p>
             <input type="text"  input size="7" id="ypos" name="ypos" readonly>              
            
-            <input class="button" type="submit" name="button" value=" List Nearby Zipcodes "  /> 
+            <input class="button" type="submit" name="button" value= " List Nearby Zipcodes " /> 
         	<p> Items per Page </p>   
             <select type="submit" name="drop" id="selectImg">
-            	<option >5</option>
-            	<option >10</option>
-            	<option >15</option>
-            	<option >20</option>
+            	<option>5</option>
+            	<option>10</option>
+            	<option>15</option>
+            	<option>20</option>
             </select> 
         </form>                      
 	</div>
@@ -124,16 +173,16 @@
 			var canvas = document.getElementById('mapCanvas');
     	   	canvas.addEventListener('mousedown', function(events){
     	   		var mousePos = getMousePos(canvas, events);
-    	   		var tx = document.getElementById("xpos");
-    	   		var ty = document.getElementById("ypos");
-    	   		tx.value = (49.2522 - 0.0494*mousePos.y).toFixed(3);
-		  		ty.value = (-125.6301 + 0.0594*mousePos.x).toFixed(3);
+    	   		var latitudeField = document.getElementById("xpos");
+    	   		var longitudeField = document.getElementById("ypos");
+    	   		latitudeField.value = (49.2522 - 0.0494*mousePos.y).toFixed(3);
+		  		longitudeField.value = (-125.6301 + 0.0594*mousePos.x).toFixed(3);
 		  		
 
 	  			sessionStorage.lastMouseX = mousePos.x;
 	  			sessionStorage.lastMouseY = mousePos.y; 
-	  			sessionStorage.latitude = tx.value;
-	  			sessionStorage.longitude = ty.value;
+	  			sessionStorage.latitude = latitudeField.value;
+	  			sessionStorage.longitude = longitudeField.value;
 		  		drawMap()
 		  	})
 		
