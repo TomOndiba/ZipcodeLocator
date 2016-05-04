@@ -88,6 +88,7 @@
 	</div>
 
 	<div class="table">
+	
 	<?php
 
 		function latLonToMiles($lat1, $lon1, $lat2, $lon2)
@@ -133,26 +134,26 @@
 						//make initial table 
 						echo("<table id='table'>	
 							<tr>
-							<td> Zip Code </td>
-        					<td> City </td>
-                         	<td> State </td>
-                         	<td> Lat </td>
-                         	<td> Lon </td>
-                         	<td>Distance (miles) </td>
-                         	<td>Time Diff (from ET) </td></tr>" ); 
+							<td bgcolor='C13100'> Zip Code </td>
+        					<td bgcolor='C13100'> City </td>
+                         	<td bgcolor='C13100'> State </td>
+                         	<td bgcolor='C13100'> Lat </td>
+                         	<td bgcolor='C13100'> Lon </td>
+                         	<td bgcolor='C13100'> Distance (miles) </td>
+                         	<td bgcolor='C13100'> Time Diff (from ET) </td></tr>" ); 
 
 						// populating database with info from databse
 						$records = mysqli_query($db_conn, $cmd);
 						if($records){
 							while($row = mysqli_fetch_array($records)){
 							echo( "<tr>"
-								. "<td>" . $row['Zipcode'] . "</td>" 
-							 	. "<td>" . $row['City']    . "</td>" 
-							 	. "<td>" . $row['State']   . "</td>"
-							 	. "<td>" . $row['Latitude'] . "</td>"  
-							 	. "<td>" . $row['Longitude']	. "</td>"
-							 	. "<td >" . (latLonToMiles($row['Latitude'], $row['Longitude'], $userLatitude, $userLongitude)) . "</td>" 	 		
-							 	. "<td>" . ($row['gap']+5) . "</td>"  
+								. "<td id='zipcode' bgcolor='097054'>" . $row['Zipcode'] . "</td>" 
+							 	. "<td id='place' bgcolor='6599FF'>" . $row['City']    . "</td>" 
+							 	. "<td id='place' bgcolor='6599FF'>" . $row['State']   . "</td>"
+							 	. "<td id='lonLat' bgcolor='FF9900'>" . $row['Latitude'] . "</td>"  
+							 	. "<td id='lonLat' bgcolor='FF9900'>" . $row['Longitude']	. "</td>"
+							 	. "<td id='distance' bgcolor='2C6700'>" . (latLonToMiles($row['Latitude'], $row['Longitude'], $userLatitude, $userLongitude)) . "</td>" 	
+							 	. "<td id='gap' bgcolor='FFCF79'>" . ($row['gap']+5) . "</td>"  
 							 	. "</td></tr>");					
 
 							
